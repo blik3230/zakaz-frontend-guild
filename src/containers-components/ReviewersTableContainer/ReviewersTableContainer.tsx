@@ -35,9 +35,12 @@ export const ReviewersTableContainer = () => {
 
       {!!selectedMemberName && (
         <Fragment>
+          <h2>
+            Глубокоуважаемый <strong>&quot;{selectedMemberName}&quot;</strong>
+          </h2>
+
           <p>
-            Глубокоуважаемый <strong>&quot;{selectedMemberName}&quot;</strong> В
-            этот спринт Вы ревьювите следующих членов гильдии{" "}
+            Вас ревьювят:&nbsp;
             <strong>
               &quot;
               {getReviewingMembersNames(tableMembers, selectedMemberName).join(
@@ -46,7 +49,9 @@ export const ReviewersTableContainer = () => {
               &quot;
             </strong>
           </p>
+
           <p>
+            Вы ревьювите:&nbsp;
             <strong>
               &quot;
               {getReviewedMembersNames(tableMembers, selectedMemberName).join(
@@ -54,7 +59,6 @@ export const ReviewersTableContainer = () => {
               )}
               &quot;
             </strong>
-            - будут ревьювить Вас
           </p>
         </Fragment>
       )}

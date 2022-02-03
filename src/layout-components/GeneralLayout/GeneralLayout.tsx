@@ -14,7 +14,7 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
         <header className="header-default">
           <div className="header-default__left">
             <Link href="/">
-              <a className="logo">Frontend Guild</a>
+              <a className="logo">Zakaz Frontend Guild</a>
             </Link>
           </div>
           <div className="header-default__right"></div>
