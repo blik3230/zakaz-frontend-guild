@@ -1,4 +1,5 @@
-import React, { CSSProperties } from "react";
+import React, { Fragment } from "react";
+import styles from "./ReviewersTable.styles";
 
 export interface TableMember {
   name: string;
@@ -9,64 +10,62 @@ interface Props {
   members: TableMember[];
 }
 
-const tableStyles: CSSProperties = {
-  width: "100%",
-  borderCollapse: "collapse",
-};
-
-const tdStyles: CSSProperties = {
-  border: "1px solid #fff",
-};
-
-const activeTdStyles: CSSProperties = {
-  ...tdStyles,
-  background: "green",
-};
-
 const ReviewersTable = (props: Props) => {
   const { members } = props;
 
   return (
-    <table style={tableStyles}>
-      <thead>
-        <tr>
-          <td style={tdStyles}>&nbsp;</td>
-          {members.map((m) => (
-            <td key={m.name} style={tdStyles}>
-              {m.name}
-            </td>
-          ))}
-        </tr>
-      </thead>
-      {members.map((memberByRow, rowIndex) => {
-        return (
-          <tr key={memberByRow.name}>
-            <td style={tdStyles}>{memberByRow.name}</td>
-            {members.map((memberByColumn, colIndex) => {
-              if (rowIndex === colIndex) {
-                return <td style={{ background: "#fff" }}>&nbsp;</td>;
-              }
+    <Fragment>
+      <table className="ReviewersTable">
+        <thead>
+          <tr>
+            <td className="ReviewersTable__td">&nbsp;</td>
+            {members.map((m) => (
+              <td key={m.name} className="ReviewersTable__td">
+                {m.name}
+              </td>
+            ))}
+          </tr>
+        </thead>
+        {members.map((memberByRow, rowIndex) => {
+          return (
+            <tr key={memberByRow.name}>
+              <td className="ReviewersTable__td">{memberByRow.name}</td>
+              {members.map((memberByColumn, colIndex) => {
+                if (rowIndex === colIndex) {
+                  return (
+                    <td className="ReviewersTable__td ReviewersTable__td_white">
+                      &nbsp;
+                    </td>
+                  );
+                }
 
-              if (
-                memberByRow.reviewingMembersNames.includes(memberByColumn.name)
-              ) {
+                if (
+                  memberByRow.reviewingMembersNames.includes(
+                    memberByColumn.name
+                  )
+                ) {
+                  return (
+                    <td
+                      key={memberByColumn.name}
+                      className="ReviewersTable__td ReviewersTable__td_active"
+                    >
+                      &nbsp;
+                    </td>
+                  );
+                }
+
                 return (
-                  <td key={memberByColumn.name} style={activeTdStyles}>
+                  <td key={memberByColumn.name} className="ReviewersTable__td">
                     &nbsp;
                   </td>
                 );
-              }
-
-              return (
-                <td key={memberByColumn.name} style={tdStyles}>
-                  &nbsp;
-                </td>
-              );
-            })}
-          </tr>
-        );
-      })}
-    </table>
+              })}
+            </tr>
+          );
+        })}
+      </table>
+      <style jsx>{styles}</style>
+    </Fragment>
   );
 };
 

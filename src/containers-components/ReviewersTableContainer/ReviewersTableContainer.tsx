@@ -3,10 +3,10 @@ import {
   useGuildMembers,
 } from "../../hooks/useGuildMembers/useGuildMembers";
 import ReviewersTable from "../../presentation-components/ReviewersTable/ReviewersTable";
+import styles from "./ReviewersTableContainer.styles";
 
 export const ReviewersTableContainer = () => {
   const { guildMembers } = useGuildMembers();
-
   const weekCount = getNumberOfCurrentWeek();
   const reviewShiftIndex = getShiftOfTable(weekCount, guildMembers.length);
   const tableMembers = guildMembersToTableMembers(
@@ -15,10 +15,11 @@ export const ReviewersTableContainer = () => {
   );
 
   return (
-    <div>
+    <div className="ReviewersTableContainer">
       <h2>{reviewShiftIndex}</h2>
 
       <ReviewersTable members={tableMembers} />
+      <style jsx>{styles}</style>
     </div>
   );
 };
