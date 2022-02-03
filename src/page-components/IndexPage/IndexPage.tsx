@@ -31,9 +31,6 @@ const IndexPage: NextPage = () => {
 
   return (
     <GeneralLayout>
-      <h1>Welcome in the frontend guild!</h1>
-
-      <h2>Table of reviewers:</h2>
       <ReviewersTableContainer />
     </GeneralLayout>
   );

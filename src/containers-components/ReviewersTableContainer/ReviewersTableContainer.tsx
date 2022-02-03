@@ -1,3 +1,4 @@
+import { Fragment, useState } from "react";
 import {
   GuildMember,
   useGuildMembers,
@@ -10,6 +11,7 @@ import styles from "./ReviewersTableContainer.styles";
 export const ReviewersTableContainer = () => {
   const { guildMembers } = useGuildMembers();
   const weekCount = getNumberOfCurrentWeek();
+  const [selectedMemberName, setSelectedMemberName] = useState("");
 
   const reviewShiftIndex = getShiftOfTable(weekCount, guildMembers.length - 1);
 
@@ -20,6 +22,7 @@ export const ReviewersTableContainer = () => {
 
   const handleMemberClick = (memberName: TableMember["name"]) => {
     console.log(memberName);
+    setSelectedMemberName(memberName);
   };
 
   return (
@@ -30,10 +33,56 @@ export const ReviewersTableContainer = () => {
         members={tableMembers}
         onMemberClick={handleMemberClick}
       />
+
+      {!!selectedMemberName && (
+        <Fragment>
+          <p>
+            Глубокоуважаемый <strong>&quot;{selectedMemberName}&quot;</strong> В
+            этот спринт Вы ревьювите следующих членов гильдии{" "}
+            <strong>
+              &quot;
+              {getReviewingMembersNames(tableMembers, selectedMemberName).join(
+                " и "
+              )}
+              &quot;
+            </strong>
+          </p>
+          <p>
+            <strong>
+              &quot;
+              {getReviewedMembersNames(tableMembers, selectedMemberName).join(
+                " и "
+              )}
+              &quot;
+            </strong>
+            - будут ревьювить Вас
+          </p>
+        </Fragment>
+      )}
       <style jsx>{styles}</style>
     </div>
   );
 };
+
+function getReviewingMembersNames(
+  tableMembers: TableMember[],
+  memberName: TableMember["name"]
+): TableMember["name"][] {
+  return tableMembers.find((m) => m.name === memberName)!.reviewingMembersNames;
+}
+
+function getReviewedMembersNames(
+  tableMembers: TableMember[],
+  memberName: TableMember["name"]
+): TableMember["name"][] {
+  return tableMembers.reduce((acc, m) => {
+    if (m.reviewingMembersNames.includes(memberName)) {
+      acc.push(m.name);
+    }
+
+    return acc;
+  }, [] as TableMember["name"][]);
+}
 
 function getShiftOfTable(weekCount: number, membersCount: number) {
   return (Math.ceil(weekCount / 2) - 1) % membersCount;
@@ -51,7 +100,7 @@ function getNumberOfCurrentWeek(day = new Date()) {
 function guildMembersToTableMembers(
   guildMembers: GuildMember[],
   reviewShiftIndex: number
-) {
+): TableMember[] {
   return guildMembers.map((m, index, sortedGuildMembers) => {
     return {
       name: m.tableName,
