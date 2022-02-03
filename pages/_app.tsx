@@ -20,9 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-
-    console.log(app);
+    initializeApp(firebaseConfig);
   }, []);
 
   return <Component {...pageProps} />;

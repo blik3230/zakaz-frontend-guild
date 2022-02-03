@@ -21,7 +21,6 @@ export const ReviewersTableContainer = () => {
   );
 
   const handleMemberClick = (memberName: TableMember["name"]) => {
-    console.log(memberName);
     setSelectedMemberName(memberName);
   };
 
@@ -123,8 +122,6 @@ function getReviewingMembersName(
     reviewersMembers.length;
   const secondNextReviewerIndex =
     (index + 2 + reviewShiftIndex - 1) % reviewersMembers.length;
-  console.log("nextReviewerIndex", nextReviewerIndex);
-  console.log("reviewersMembers", reviewersMembers);
   return [
     reviewersMembers[nextReviewerIndex]!.tableName,
     reviewersMembers[secondNextReviewerIndex]!.tableName,
