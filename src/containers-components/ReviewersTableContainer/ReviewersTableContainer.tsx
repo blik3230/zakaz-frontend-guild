@@ -2,23 +2,34 @@ import {
   GuildMember,
   useGuildMembers,
 } from "../../hooks/useGuildMembers/useGuildMembers";
-import ReviewersTable from "../../presentation-components/ReviewersTable/ReviewersTable";
+import ReviewersTable, {
+  TableMember,
+} from "../../presentation-components/ReviewersTable/ReviewersTable";
 import styles from "./ReviewersTableContainer.styles";
 
 export const ReviewersTableContainer = () => {
   const { guildMembers } = useGuildMembers();
   const weekCount = getNumberOfCurrentWeek();
-  const reviewShiftIndex = getShiftOfTable(weekCount, guildMembers.length);
+
+  const reviewShiftIndex = getShiftOfTable(weekCount, guildMembers.length - 1);
+
   const tableMembers = guildMembersToTableMembers(
     guildMembers,
     reviewShiftIndex
   );
 
+  const handleMemberClick = (memberName: TableMember["name"]) => {
+    console.log(memberName);
+  };
+
   return (
     <div className="ReviewersTableContainer">
-      <h2>{reviewShiftIndex}</h2>
+      <h1>Таблица ревьюверов</h1>
 
-      <ReviewersTable members={tableMembers} />
+      <ReviewersTable
+        members={tableMembers}
+        onMemberClick={handleMemberClick}
+      />
       <style jsx>{styles}</style>
     </div>
   );
@@ -28,16 +39,12 @@ function getShiftOfTable(weekCount: number, membersCount: number) {
   return (Math.ceil(weekCount / 2) - 1) % membersCount;
 }
 
-function getNumberOfCurrentWeek() {
-  const currentDay = new Date();
+function getNumberOfCurrentWeek(day = new Date()) {
   const startDate = new Date(2022, 0, 10);
-  const millisecsInDay = 86400000;
-  console.log("curDay", currentDay);
-  console.log("startDay", startDate.getTime());
-  console.log(millisecsInDay);
+  const millisecondsInDay = 86400000;
 
   return Math.ceil(
-    ((currentDay.getTime() - startDate.getTime()) / millisecsInDay + 1) / 7
+    ((day.getTime() - startDate.getTime()) / millisecondsInDay + 1) / 7
   );
 }
 
@@ -45,36 +52,32 @@ function guildMembersToTableMembers(
   guildMembers: GuildMember[],
   reviewShiftIndex: number
 ) {
-  return [...guildMembers]
-    .sort((a, b) => a.order - b.order)
-    .map((m, index, sortedGuildMembers) => {
-      return {
-        name: m.tableName,
-        reviewingMembersNames: getReviewingMembersName(
-          sortedGuildMembers,
-          m.order,
-          reviewShiftIndex
-        ),
-      };
-    });
+  return guildMembers.map((m, index, sortedGuildMembers) => {
+    return {
+      name: m.tableName,
+      reviewingMembersNames: getReviewingMembersName(
+        sortedGuildMembers.filter((i) => i.name !== m.name),
+        index,
+        reviewShiftIndex
+      ),
+    };
+  });
 }
 
 function getReviewingMembersName(
-  guildMembers: GuildMember[],
-  order: number,
+  reviewersMembers: GuildMember[],
+  index: number,
   reviewShiftIndex: number
 ) {
-  const nextReviewerOrder =
-    (order + 1 + reviewShiftIndex) % guildMembers.length || guildMembers.length;
-  const secondNextReviewerOrder =
-    (order + 2 + reviewShiftIndex) % guildMembers.length || guildMembers.length;
-
-  console.log("guildMembers", guildMembers);
-  console.log("next", nextReviewerOrder);
-  console.log("second-next", secondNextReviewerOrder);
-
+  const nextReviewerIndex =
+    (index + 1 + reviewShiftIndex - 1) /* - 1 грубое обнуление моего индекса*/ %
+    reviewersMembers.length;
+  const secondNextReviewerIndex =
+    (index + 2 + reviewShiftIndex - 1) % reviewersMembers.length;
+  console.log("nextReviewerIndex", nextReviewerIndex);
+  console.log("reviewersMembers", reviewersMembers);
   return [
-    guildMembers.find((m) => m.order === nextReviewerOrder)!.tableName,
-    guildMembers.find((m) => m.order === secondNextReviewerOrder)!.tableName,
+    reviewersMembers[nextReviewerIndex]!.tableName,
+    reviewersMembers[secondNextReviewerIndex]!.tableName,
   ];
 }

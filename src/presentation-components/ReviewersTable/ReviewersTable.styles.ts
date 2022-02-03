@@ -9,7 +9,9 @@ export default css`
   }
 
   .ReviewersTable__td {
+    padding: 2px 10px;
     border: 1px solid #fff;
+    box-shadow: inset -1px 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .ReviewersTable__td_white {
@@ -18,5 +20,9 @@ export default css`
 
   .ReviewersTable__td_active {
     background: green;
+  }
+
+  .ReviewersTable__td_clickable {
+    cursor: pointer;
   }
 `;

@@ -8,10 +8,11 @@ export interface TableMember {
 
 interface Props {
   members: TableMember[];
+  onMemberClick(memberName: TableMember["name"]): void;
 }
 
 const ReviewersTable = (props: Props) => {
-  const { members } = props;
+  const { members, onMemberClick } = props;
 
   return (
     <Fragment>
@@ -20,7 +21,11 @@ const ReviewersTable = (props: Props) => {
           <tr>
             <td className="ReviewersTable__td">&nbsp;</td>
             {members.map((m) => (
-              <td key={m.name} className="ReviewersTable__td">
+              <td
+                key={m.name}
+                className="ReviewersTable__td ReviewersTable__td_clickable"
+                onClick={() => onMemberClick(m.name)}
+              >
                 {m.name}
               </td>
             ))}
@@ -28,12 +33,20 @@ const ReviewersTable = (props: Props) => {
         </thead>
         {members.map((memberByRow, rowIndex) => {
           return (
-            <tr key={memberByRow.name}>
-              <td className="ReviewersTable__td">{memberByRow.name}</td>
+            <tr key={memberByRow.name} className="ReviewersTable__tr">
+              <td
+                className="ReviewersTable__td ReviewersTable__td_clickable"
+                onClick={() => onMemberClick(memberByRow.name)}
+              >
+                {memberByRow.name}
+              </td>
               {members.map((memberByColumn, colIndex) => {
                 if (rowIndex === colIndex) {
                   return (
-                    <td className="ReviewersTable__td ReviewersTable__td_white">
+                    <td
+                      key={memberByColumn.name}
+                      className="ReviewersTable__td ReviewersTable__td_white"
+                    >
                       &nbsp;
                     </td>
                   );
