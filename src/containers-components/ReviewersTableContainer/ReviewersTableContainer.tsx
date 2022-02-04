@@ -29,6 +29,7 @@ export const ReviewersTableContainer = () => {
       <h1>Таблица ревьюверов</h1>
 
       <ReviewersTable
+        selectedMemberName={selectedMemberName}
         members={tableMembers}
         onMemberClick={handleMemberClick}
       />

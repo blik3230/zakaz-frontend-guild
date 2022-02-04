@@ -22,6 +22,10 @@ export default css`
     background: green;
   }
 
+  .ReviewersTable__td_accentedActive {
+    background: #003780;
+  }
+
   .ReviewersTable__td_clickable {
     cursor: pointer;
   }

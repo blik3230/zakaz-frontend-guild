@@ -9,10 +9,11 @@ export interface TableMember {
 interface Props {
   members: TableMember[];
   onMemberClick(memberName: TableMember["name"]): void;
+  selectedMemberName: TableMember["name"];
 }
 
 const ReviewersTable = (props: Props) => {
-  const { members, onMemberClick } = props;
+  const { members, onMemberClick, selectedMemberName } = props;
 
   return (
     <Fragment>
@@ -53,6 +54,7 @@ const ReviewersTable = (props: Props) => {
                 }
 
                 if (
+                  memberByRow.name === selectedMemberName &&
                   memberByRow.reviewingMembersNames.includes(
                     memberByColumn.name
                   )
@@ -60,7 +62,26 @@ const ReviewersTable = (props: Props) => {
                   return (
                     <td
                       key={memberByColumn.name}
-                      className="ReviewersTable__td ReviewersTable__td_active"
+                      className={`ReviewersTable__td  ReviewersTable__td_accentedActive `}
+                    >
+                      &nbsp;
+                    </td>
+                  );
+                }
+
+                if (
+                  memberByRow.reviewingMembersNames.includes(
+                    memberByColumn.name
+                  )
+                ) {
+                  return (
+                    <td
+                      key={memberByColumn.name}
+                      className={`ReviewersTable__td  ${
+                        selectedMemberName === memberByColumn.name
+                          ? "ReviewersTable__td_accentedActive"
+                          : "ReviewersTable__td_active"
+                      }`}
                     >
                       &nbsp;
                     </td>
