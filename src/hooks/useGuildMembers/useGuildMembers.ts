@@ -17,8 +17,8 @@ const guildMembersMock: GuildMember[] = [
   {
     id: "2",
     order: 2,
-    name: "Pop",
-    tableName: "Pop",
+    name: "Bon",
+    tableName: "Bon",
   },
   {
     id: "3",
@@ -43,12 +43,6 @@ const guildMembersMock: GuildMember[] = [
     order: 6,
     name: "Chu",
     tableName: "Chu",
-  },
-  {
-    id: "7",
-    order: 7,
-    name: "Bon",
-    tableName: "Bon",
   },
 ];
 
