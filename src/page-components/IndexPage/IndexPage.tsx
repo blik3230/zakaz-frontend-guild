@@ -1,10 +1,15 @@
+import Box from '@mui/material/Box';
 import { NextPage } from "next";
 import { GeneralLayout } from "../../layout-components/GeneralLayout/GeneralLayout";
+import AuthForm from '../../modules/auth/components/AuthForm';
 
 const IndexPage: NextPage = () => {
   return (
     <GeneralLayout>
-      <h1>Home page</h1>
+      <Box sx={{maxWidth: 460, mx: 'auto'}}>
+        <AuthForm/>
+      </Box>
+
     </GeneralLayout>
   );
 };

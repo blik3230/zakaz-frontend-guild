@@ -2,8 +2,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import MUILink from '../../ui-kit/MUILink/MUILink';
 
 interface GeneralLayoutProps {
   children: ReactNode;
@@ -25,16 +25,12 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
           >
             <MenuIcon/>
           </IconButton>
-          <Link href="/">
-            <Typography href="/" variant="h6" component="a">
-              Zakaz Frontend Guild
-            </Typography>
-          </Link>
-          <Link href="/reviewers">
-            <Typography href="/" variant="h6" component="a" sx={{ml: 2}}>
-              List of reviewers
-            </Typography>
-          </Link>
+          <MUILink href="/">
+            Zakaz Frontend Guild
+          </MUILink>
+          <MUILink href="/reviewers">
+            List of reviewers
+          </MUILink>
           <Button color="inherit" sx={{ml: 'auto'}}>Login</Button>
         </Toolbar>
       </AppBar>
