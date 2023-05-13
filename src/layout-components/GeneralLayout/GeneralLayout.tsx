@@ -3,6 +3,7 @@ import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import { ReactNode } from 'react';
+import useAuthService from '../../modules/auth/hooks/useAuthService';
 import MUILink from '../../ui-kit/MUILink/MUILink';
 
 interface GeneralLayoutProps {
@@ -11,6 +12,7 @@ interface GeneralLayoutProps {
 
 export const GeneralLayout = (props: GeneralLayoutProps) => {
   const { children } = props;
+  const { isLogedIn, logout } = useAuthService();
 
   return (
     <Box>
@@ -31,7 +33,19 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
           <MUILink href="/reviewers">
             List of reviewers
           </MUILink>
-          <Button color="inherit" sx={{ml: 'auto'}}>Login</Button>
+
+          {
+            isLogedIn && (
+              <Button
+                color="inherit"
+                sx={{ml: 'auto'}}
+                onClick={() => logout()}
+              >
+                Logout
+              </Button>
+            )
+          }
+
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ px: 3 }}>

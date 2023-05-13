@@ -1,23 +1,49 @@
 import { Avatar, Box, Typography, TextField, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { FormEvent } from 'react';
+import * as React from 'react';
+import { FormEvent, useState } from 'react';
 import MUILink from '../../../ui-kit/MUILink/MUILink';
+import useAuthService from '../hooks/useAuthService';
 
 const AuthForm = () => {
-  const auth = getAuth();
+  const authService = useAuthService();
+  const [loginError, setLoginError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const email: string = formData.get('email')?.toString() || '';
     const password: string = formData.get('password')?.toString() || '';
+    const dataAreValid = email.length > 0 && password.length > 0;
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => console.log('user signed in', userCredential))
-      .catch(err => console.log('sing in error', err));
+    if (dataAreValid) {
+      const successLogin = await authService.login(email, password);
 
+      if (successLogin) {
+        // todo: действия после авторизации
+      } else {
+        setLoginError(true);
+      }
+    }
   };
+
+  const createHandlerInputChange = (inputName: 'email' | 'password') => {
+    return (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      setLoginError(false);
+
+      switch (inputName) {
+        case 'email':
+          setEmail(e.target.value);
+          break;
+        case 'password':
+          setPassword(e.target.value);
+          break;
+      }
+    };
+  }
+
 
   return (
     <Box>
@@ -38,6 +64,9 @@ const AuthForm = () => {
           name="email"
           autoComplete="off"
           autoFocus
+          value={email}
+          error={loginError}
+          onChange={createHandlerInputChange('email')}
         />
         <TextField
           margin="normal"
@@ -48,6 +77,9 @@ const AuthForm = () => {
           type="password"
           id="password"
           autoComplete="off"
+          value={password}
+          error={loginError}
+          onChange={createHandlerInputChange('password')}
         />
         <FormControlLabel
           control={ <Checkbox value="remember" color="primary"/> }
