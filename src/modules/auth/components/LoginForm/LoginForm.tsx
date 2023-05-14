@@ -1,8 +1,7 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Avatar, Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { FormEvent, useState } from 'react';
-import MUILink from '../../../../ui-kit/MUILink/MUILink';
 import useAuthService from '../../hooks/useAuthService';
 
 const LoginForm = () => {
@@ -89,23 +88,6 @@ const LoginForm = () => {
         >
           Login
         </Button>
-        <Grid container>
-          <Grid item xs>
-            <MUILink href="#">
-              <Typography variant="body2">
-                Forgot password?
-              </Typography>
-            </MUILink>
-          </Grid>
-
-          <Grid item>
-            <MUILink href="#">
-              <Typography variant="body2">{ `
-                Don't have an account? Sign Up
-              ` }</Typography>
-            </MUILink>
-          </Grid>
-        </Grid>
       </Box>
     </Box>
   );
