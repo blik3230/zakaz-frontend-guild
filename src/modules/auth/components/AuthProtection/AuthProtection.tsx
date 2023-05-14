@@ -1,6 +1,7 @@
-import { FC, ReactChildren, ReactNode } from 'react';
+import Box from '@mui/material/Box';
+import { FC } from 'react';
 import useAuthService from '../../hooks/useAuthService';
-import AuthForm from '../AuthForm';
+import LoginForm from '../LoginForm/LoginForm';
 
 const AuthProtection: FC = (props) => {
   const { loginIsChecked, isLogedIn } = useAuthService();
@@ -13,7 +14,15 @@ const AuthProtection: FC = (props) => {
     return <>{ props.children }</>;
   }
 
-  return <AuthForm/>;
+  return (
+    <Box sx={ { display: 'flex', height: '100%' } }>
+      <Box sx={ { maxWidth: 460, margin: 'auto' } }>
+        <LoginForm/>
+
+        {/*<RegistrationForm/>*/}
+      </Box>
+    </Box>
+  );
 };
 
 export default AuthProtection;

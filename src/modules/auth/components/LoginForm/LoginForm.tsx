@@ -1,11 +1,11 @@
-import { Avatar, Box, Typography, TextField, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Avatar, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { FormEvent, useState } from 'react';
-import MUILink from '../../../ui-kit/MUILink/MUILink';
-import useAuthService from '../hooks/useAuthService';
+import MUILink from '../../../../ui-kit/MUILink/MUILink';
+import useAuthService from '../../hooks/useAuthService';
 
-const AuthForm = () => {
+const LoginForm = () => {
   const authService = useAuthService();
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
@@ -51,7 +51,7 @@ const AuthForm = () => {
         <LockOutlinedIcon/>
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign in
+        Login
       </Typography>
       <Box component="form" onSubmit={ handleSubmit } noValidate
            sx={ { mt: 1 } }>
@@ -81,17 +81,13 @@ const AuthForm = () => {
           error={loginError}
           onChange={createHandlerInputChange('password')}
         />
-        <FormControlLabel
-          control={ <Checkbox value="remember" color="primary"/> }
-          label="Remember me"
-        />
         <Button
           type="submit"
           fullWidth
           variant="contained"
           sx={ { mt: 3, mb: 2 } }
         >
-          Sign In
+          Login
         </Button>
         <Grid container>
           <Grid item xs>
@@ -115,4 +111,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default LoginForm;

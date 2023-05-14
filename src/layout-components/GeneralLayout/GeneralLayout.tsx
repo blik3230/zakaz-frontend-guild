@@ -10,6 +10,19 @@ interface GeneralLayoutProps {
   children: ReactNode;
 }
 
+const mainSx = {
+  display: 'flex',
+  height: '100vh',
+  flexDirection: 'column',
+  px: 3,
+};
+
+const whapChildrenSx = {
+  flex: '1 0 auto',
+  width: '100%',
+  minHeight: 0,
+};
+
 export const GeneralLayout = (props: GeneralLayoutProps) => {
   const { children } = props;
   const { isLogedIn, logout } = useAuthService();
@@ -27,10 +40,15 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
           >
             <MenuIcon/>
           </IconButton>
-          <MUILink href="/">
+
+          <MUILink href="/" color={ 'inherit' }>
             Zakaz Frontend Guild
           </MUILink>
-          <MUILink href="/reviewers">
+
+          <Typography variant="h6" component="div"
+                      sx={ { mx: 1 } }>|</Typography>
+
+          <MUILink href="/reviewers" color={ 'inherit' }>
             List of reviewers
           </MUILink>
 
@@ -38,8 +56,8 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
             isLogedIn && (
               <Button
                 color="inherit"
-                sx={{ml: 'auto'}}
-                onClick={() => logout()}
+                sx={ { ml: 'auto' } }
+                onClick={ () => logout() }
               >
                 Logout
               </Button>
@@ -48,9 +66,11 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
 
         </Toolbar>
       </AppBar>
-      <Box component="main" sx={{ px: 3 }}>
-        <Toolbar />
-        { children }
+      <Box component="main" sx={ mainSx } id="main">
+        <Toolbar/>
+        <Box sx={ whapChildrenSx }>
+          { children }
+        </Box>
       </Box>
     </Box>
   );

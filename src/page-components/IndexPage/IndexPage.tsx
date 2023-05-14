@@ -1,16 +1,12 @@
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { NextPage } from "next";
-import { GeneralLayout } from "../../layout-components/GeneralLayout/GeneralLayout";
+import { NextPage } from 'next';
 
 const IndexPage: NextPage = () => {
   return (
-    <GeneralLayout>
-      <Box sx={{maxWidth: 460, mx: 'auto'}}>
-        <Typography>Главная страница</Typography>
-      </Box>
-
-    </GeneralLayout>
+    <Box sx={ { maxWidth: 460, mx: 'auto' } }>
+      <Typography>Главная страница</Typography>
+    </Box>
   );
 };
 

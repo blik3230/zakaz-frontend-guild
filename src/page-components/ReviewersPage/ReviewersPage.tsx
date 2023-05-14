@@ -1,8 +1,8 @@
 //import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { NextPage } from "next";
-import React from "react";
-import { ReviewersTableContainer } from "../../containers-components/ReviewersTableContainer/ReviewersTableContainer";
-import { GeneralLayout } from "../../layout-components/GeneralLayout/GeneralLayout";
+import { NextPage } from 'next';
+import React from 'react';
+import { ReviewersTableContainer } from '../../containers-components/ReviewersTableContainer/ReviewersTableContainer';
+import { GeneralLayout } from '../../layout-components/GeneralLayout/GeneralLayout';
 
 const IndexPage: NextPage = () => {
   const handleClick = () => {
@@ -30,9 +30,7 @@ const IndexPage: NextPage = () => {
   };
 
   return (
-    <GeneralLayout>
-      <ReviewersTableContainer />
-    </GeneralLayout>
+    <ReviewersTableContainer/>
   );
 };
 
