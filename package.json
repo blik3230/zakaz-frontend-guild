@@ -13,6 +13,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.0",
+    "@types/material-ui": "^0.21.12",
     "click-to-react-component": "^1.0.8",
     "firebase": "^9.6.5",
     "firebaseui": "^6.0.0",
