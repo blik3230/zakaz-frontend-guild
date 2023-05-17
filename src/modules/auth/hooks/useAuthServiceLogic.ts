@@ -1,7 +1,8 @@
 import { DataSnapshot } from '@firebase/database';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { onValue, ref } from 'firebase/database';
 import { useCallback, useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, database } from '../../../sdk/firebase';
 import { UserProfile } from '../auth.types';
 
@@ -10,36 +11,29 @@ import { UserProfile } from '../auth.types';
 
 const useAuthServiceLogic = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [loginIsChecked, setLoginIsChecked] = useState(false);
+  const [user, loading, error] = useAuthState(auth);
 
-  // check login;
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log('current user', auth.currentUser);
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        const starCountRef = ref(database, `/users/${ uid }`);
-        const handleValueChange = (snapshot: DataSnapshot) => {
-          const data = snapshot.val();
+    if (user) {
+      const uid = user.uid;
+      const userProfileRef = ref(database, `/users/${ uid }`);
 
-          setUserProfile(data);
-        };
-        const unsubscribable = onValue(starCountRef, handleValueChange);
-        setLoginIsChecked(true);
+      const handleValueChange = (snapshot: DataSnapshot) => {
+        const data = snapshot.val();
 
-        return () => {
-          // Отписка от слушателя onValue при размонтировании компонента
-          unsubscribable();
-        };
-      } else {
-        console.log('user is signed out');
-        setUserProfile(null);
-      }
-      setLoginIsChecked(true);
-    });
-  }, []);
+        setUserProfile(data);
+      };
+
+      const unsubscribable = onValue(userProfileRef, handleValueChange);
+
+      return () => {
+        // Отписка от слушателя onValue при размонтировании компонента
+        unsubscribable();
+      };
+    } else {
+      setUserProfile(null);
+    }
+  }, [user]);
 
   const login = useCallback(
     async (email: string, password: string): Promise<boolean> => {
@@ -52,18 +46,17 @@ const useAuthServiceLogic = () => {
       }
     }, []);
 
-  const logout = useCallback(async () => {
-    console.log('logout');
-    const result = await signOut(auth);
-    console.log(result);
+  const logout = useCallback(() => {
+    signOut(auth).then();
   }, []);
 
   return {
-    loginIsChecked,
+    loginIsChecked: user || !loading,
     isLogedIn: !!userProfile,
     userProfile: userProfile,
     login,
     logout,
+    error,
   };
 };
 
