@@ -27,6 +27,7 @@ const useAuthServiceLogic = () => {
           setUserProfile(data);
         };
         const unsubscribable = onValue(starCountRef, handleValueChange);
+        setLoginIsChecked(true);
 
         return () => {
           // Отписка от слушателя onValue при размонтировании компонента
