@@ -2,11 +2,12 @@ import useAuthServiceLogic from './hooks/useAuthServiceLogic';
 
 export type AuthService = ReturnType<typeof useAuthServiceLogic>;
 
+export type UserRole = 'admin' | 'developer';
+
 export interface UserProfile {
-  displayName: string;
+  firstName: string;
+  lastName: string;
   email: string | null;
-  phoneNumber: string | null;
-  photoURL: string | null;
-  providerId: string;
   uid: string;
+  role: UserRole;
 }

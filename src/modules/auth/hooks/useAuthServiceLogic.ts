@@ -1,8 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { DataSnapshot } from '@firebase/database';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../../../sdk/firebase';
+import { onValue, ref } from 'firebase/database';
+import { useCallback, useEffect, useState } from 'react';
+import { auth, database } from '../../../sdk/firebase';
 import { UserProfile } from '../auth.types';
-import { transformUserToUserProfile } from '../helpers/transformUserToUserProfile';
+
+// todo: use hooks for firebase authentication and database
+// https://firebaseopensource.com/projects/csfrequency/react-firebase-hooks/#why?
 
 const useAuthServiceLogic = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -16,9 +20,18 @@ const useAuthServiceLogic = () => {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
-        console.log('user authorized');
-        const newUserProfile = transformUserToUserProfile(user);
-        setUserProfile(newUserProfile);
+        const starCountRef = ref(database, `/users/${ uid }`);
+        const handleValueChange = (snapshot: DataSnapshot) => {
+          const data = snapshot.val();
+
+          setUserProfile(data);
+        };
+        const unsubscribable = onValue(starCountRef, handleValueChange);
+
+        return () => {
+          // Отписка от слушателя onValue при размонтировании компонента
+          unsubscribable();
+        };
       } else {
         console.log('user is signed out');
         setUserProfile(null);
