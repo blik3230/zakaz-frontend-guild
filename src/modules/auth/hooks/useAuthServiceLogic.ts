@@ -1,10 +1,10 @@
-import { DataSnapshot } from '@firebase/database';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { onValue, ref } from 'firebase/database';
-import { useCallback, useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, database } from '../../../sdk/firebase';
-import { UserProfile } from '../auth.types';
+import {DataSnapshot} from '@firebase/database';
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth';
+import {onValue, ref} from 'firebase/database';
+import {useCallback, useEffect, useState} from 'react';
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {auth, database} from '../../../sdk/firebase';
+import {UserProfile} from '../auth.types';
 
 // todo: use hooks for firebase authentication and database
 // https://firebaseopensource.com/projects/csfrequency/react-firebase-hooks/#why?
@@ -16,7 +16,7 @@ const useAuthServiceLogic = () => {
   useEffect(() => {
     if (user) {
       const uid = user.uid;
-      const userProfileRef = ref(database, `/users/${ uid }`);
+      const userProfileRef = ref(database, `/users/${uid}`);
 
       const handleValueChange = (snapshot: DataSnapshot) => {
         const data = snapshot.val();
@@ -50,12 +50,24 @@ const useAuthServiceLogic = () => {
     signOut(auth).then();
   }, []);
 
+  const signUp = useCallback(
+    async (email: string, password: string): Promise<boolean> => {
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        return true;
+      } catch (err) {
+        return false
+      }
+    }, []);
+
   return {
     loginIsChecked: user || !loading,
     isLogedIn: !!userProfile,
     userProfile: userProfile,
     login,
     logout,
+    signUp,
     error,
   };
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ReactNode, useState} from "react";
+import {FormEvent, ReactNode, useState} from "react";
 import Box from "@mui/material/Box";
 import {Button, TextField, Typography} from "@mui/material";
 import Link from "@mui/material/Link";
@@ -45,9 +45,6 @@ const signUpFormInitFields: SignInFields = {
 }
 
 const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [signUpError, setSignUpError] = useState(false);
   const {
     fields,
     getUpdateValueFn,
@@ -55,9 +52,24 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
   } = useFieldsStorage(signUpFormInitFields);
   const authService = useAuthService();
 
-  function handleSubmit() {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email: string = formData.get('email')?.toString() || '';
+    const password: string = formData.get('password')?.toString() || '';
+    const confirmPassword: string = formData.get('confirmPassword')?.toString() || '';
+    const dataAreValid = email.length > 0 && password.length > 0 && password === confirmPassword;
 
-  }
+    if (dataAreValid) {
+      const signUpIsSuccessfully = await authService.signUp(email, password);
+
+      if (signUpIsSuccessfully) {
+        // todo: действия после
+      } else {
+        // setLoginError(true);
+      }
+    }
+  };
 
   const createHandlerInputChange = (inputName: keyof Omit<SignInFields, 'error'>) => {
     return (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -75,8 +87,7 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
       noValidate
       sx={{mt: 1}}
     >
-      <Typography variant={'h4'} mb={2}>Welcome to <br/>Zakaz Frontend Guild 👋🏻</Typography>
-      <Typography variant={'body1'} mb={2}>
+      <Typography variant={'h5'} mb={2}>
         Your path starts here <Typography component={'span'} sx={{fontSize: '26px'}}>👣</Typography>
       </Typography>
 
@@ -89,8 +100,8 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
         name="email"
         autoComplete="off"
         autoFocus
-        value={email}
-        error={signUpError}
+        value={fields.email}
+        error={fields.error}
         onChange={createHandlerInputChange('email')}
       />
       <TextField
@@ -102,7 +113,7 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
         type="password"
         id="password"
         autoComplete="off"
-        value={password}
+        value={fields.password}
         error={fields.error}
         onChange={createHandlerInputChange('password')}
       />
@@ -115,9 +126,9 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
         type="confirmPassword"
         id="confirmPassword"
         autoComplete="off"
-        value={password}
+        value={fields.confirmPassword}
         error={fields.error}
-        onChange={createHandlerInputChange('password')}
+        onChange={createHandlerInputChange('confirmPassword')}
       />
       <Button
         type="submit"

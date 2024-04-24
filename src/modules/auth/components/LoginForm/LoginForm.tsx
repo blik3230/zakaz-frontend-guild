@@ -56,8 +56,7 @@ const LoginForm = ({onClickToSignUp}: LoginFormProps) => {
       noValidate
       sx={{mt: 1}}
     >
-      <Typography variant={'h4'} mb={2}>Welcome to<br/>Zakaz Frontend Guild 👋🏻</Typography>
-      <Typography variant={'body1'} mb={2}>
+      <Typography variant={'h5'} mb={2}>
         Please sign-in to your account <Typography component={'span'} sx={{fontSize: '26px'}}>🚀</Typography>
       </Typography>
 
