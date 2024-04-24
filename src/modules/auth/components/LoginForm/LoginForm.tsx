@@ -1,10 +1,16 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Avatar, Box, Button, TextField, Typography } from '@mui/material';
+import {Box, Button, TextField, Typography} from '@mui/material';
 import * as React from 'react';
-import { FormEvent, useState } from 'react';
+import {FormEvent, useState} from 'react';
 import useAuthService from '../../hooks/useAuthService';
+import Link from "@mui/material/Link";
+import {useRouter} from "next/router";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onClickToSignUp(): void;
+}
+
+const LoginForm = ({onClickToSignUp}: LoginFormProps) => {
+  const router = useRouter();
   const authService = useAuthService();
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
@@ -43,51 +49,67 @@ const LoginForm = () => {
     };
   }
 
-
   return (
-    <Box>
-      <Avatar sx={ { m: 1, bgcolor: 'secondary.main' } }>
-        <LockOutlinedIcon/>
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Login
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      noValidate
+      sx={{mt: 1}}
+    >
+      <Typography variant={'h4'} mb={2}>Welcome to<br/>Zakaz Frontend Guild 👋🏻</Typography>
+      <Typography variant={'body1'} mb={2}>
+        Please sign-in to your account <Typography component={'span'} sx={{fontSize: '26px'}}>🚀</Typography>
       </Typography>
-      <Box component="form" onSubmit={ handleSubmit } noValidate
-           sx={ { mt: 1 } }>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="off"
-          autoFocus
-          value={email}
-          error={loginError}
-          onChange={createHandlerInputChange('email')}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="off"
-          value={password}
-          error={loginError}
-          onChange={createHandlerInputChange('password')}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={ { mt: 3, mb: 2 } }
+
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="Email Address"
+        name="email"
+        autoComplete="off"
+        autoFocus
+        value={email}
+        error={loginError}
+        onChange={createHandlerInputChange('email')}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        id="password"
+        autoComplete="off"
+        value={password}
+        error={loginError}
+        onChange={createHandlerInputChange('password')}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{mt: 3, mb: 2}}
+        size={'large'}
+      >
+        Login
+      </Button>
+
+      <Box display={'flex'} justifyContent={'center'}>
+        <Typography variant={'body2'}>
+          New on our guild?
+        </Typography>
+        <Link
+          component="button"
+          type={'button'}
+          variant="body2"
+          sx={{ml: 'auto'}}
+          onClick={onClickToSignUp}
         >
-          Login
-        </Button>
+          Create an account
+        </Link>
       </Box>
     </Box>
   );
