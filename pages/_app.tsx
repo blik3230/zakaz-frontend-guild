@@ -1,29 +1,26 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { useEffect } from "react";
+import {CssBaseline} from '@mui/material';
+import type {AppProps} from 'next/app';
+import {Fragment} from 'react';
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import GlobalProviders from '../src/containers-components/GlobalProviders/GlobalProviders';
+import {GeneralLayout} from '../src/layout-components/GeneralLayout/GeneralLayout';
+import {AuthProtection} from '../src/modules/auth';
+import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBcFNSnyhRbDFbDI4KDtqPDUfCCOBfTwaQ",
-      authDomain: "zakaz-frontend-guild.firebaseapp.com",
-      projectId: "zakaz-frontend-guild",
-      storageBucket: "zakaz-frontend-guild.appspot.com",
-      messagingSenderId: "217750990950",
-      appId: "1:217750990950:web:a86cca0bbec9e21051bda7",
-    };
+function MyApp({Component, pageProps}: AppProps) {
 
-    // Initialize Firebase
-    initializeApp(firebaseConfig);
-  }, []);
-
-  return <Component {...pageProps} />;
+  return (
+    <Fragment>
+      <CssBaseline/>
+      <GlobalProviders>
+        <AuthProtection>
+          <GeneralLayout>
+            <Component {...pageProps} />
+          </GeneralLayout>
+        </AuthProtection>
+      </GlobalProviders>
+    </Fragment>
+  );
 }
 
 export default MyApp;
