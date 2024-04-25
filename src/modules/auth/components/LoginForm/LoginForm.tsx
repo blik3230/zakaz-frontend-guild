@@ -3,14 +3,12 @@ import * as React from 'react';
 import {FormEvent, useState} from 'react';
 import useAuthService from '../../hooks/useAuthService';
 import Link from "@mui/material/Link";
-import {useRouter} from "next/router";
 
 interface LoginFormProps {
   onClickToSignUp(): void;
 }
 
 const LoginForm = ({onClickToSignUp}: LoginFormProps) => {
-  const router = useRouter();
   const authService = useAuthService();
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');

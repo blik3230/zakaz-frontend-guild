@@ -1,6 +1,6 @@
 import {DataSnapshot, set} from '@firebase/database';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth';
-import {getDatabase, onValue, ref} from 'firebase/database';
+import {onValue, ref} from 'firebase/database';
 import {useCallback, useEffect, useState} from 'react';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {auth, database} from '../../../sdk/firebase';
@@ -56,10 +56,10 @@ const useAuthServiceLogic = () => {
         const newUserCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = newUserCredential.user.uid;
         const userProfileRef = ref(database, `/users/${uid}`);
-        const result = await set(userProfileRef, {
+        await set(userProfileRef, {
           firstName,
           lastName,
-          role : 'admin',
+          role: 'admin',
           email,
         });
         return true;

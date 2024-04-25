@@ -31,11 +31,8 @@ const useFieldsStorage = <Fields extends {}>(initialFields: Fields) => {
     }))
   };
 
-  const getUpdateValueFn = <Name extends keyof SignInFields>(name: Name) => (value: SignInFields[Name]) => updateFields(name, value);
-
   return {
     fields: signInFields,
-    getUpdateValueFn,
     updateFields,
   };
 };
@@ -52,7 +49,6 @@ const signUpFormInitFields: SignInFields = {
 const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
   const {
     fields,
-    getUpdateValueFn,
     updateFields,
   } = useFieldsStorage(signUpFormInitFields);
   const authService = useAuthService();
