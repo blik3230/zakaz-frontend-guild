@@ -8,8 +8,7 @@ import * as React from "react";
 
 const AuthProtection: FC = (props) => {
   const {loginIsChecked, isLogedIn} = useAuthService();
-  const [renderMode, setRenderMode] = useState<'login' | 'sign_up' | 'successful_login'>('login');
-
+  const [renderMode, setRenderMode] = useState<'login' | 'sign_up'>('login');
 
   if (!loginIsChecked) {
     return <div>Check authorization</div>;
@@ -34,6 +33,8 @@ const AuthProtection: FC = (props) => {
 
         {renderMode === 'sign_up' && (
           <SignUpForm
+            // todo: remove this props
+            onSuccessFirstStep={() => setRenderMode('sign_up')}
             onClickToLogin={() => setRenderMode('login')}
           />
         )}

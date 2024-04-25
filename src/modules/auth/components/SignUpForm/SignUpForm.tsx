@@ -9,9 +9,12 @@ interface SingUpFormProps {
   children?: ReactNode;
 
   onClickToLogin(): void;
+  onSuccessFirstStep(): void;
 }
 
 type SignInFields = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword?: string;
@@ -42,6 +45,8 @@ const signUpFormInitFields: SignInFields = {
   password: '',
   confirmPassword: '',
   error: false,
+  firstName: '',
+  lastName: '',
 }
 
 const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
@@ -54,17 +59,21 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const email: string = formData.get('email')?.toString() || '';
-    const password: string = formData.get('password')?.toString() || '';
-    const confirmPassword: string = formData.get('confirmPassword')?.toString() || '';
+    const {
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+    } = fields;
     const dataAreValid = email.length > 0 && password.length > 0 && password === confirmPassword;
 
     if (dataAreValid) {
-      const signUpIsSuccessfully = await authService.signUp(email, password);
+      const signUpIsSuccessfully = await authService.signUp(email, password, firstName, lastName);
 
       if (signUpIsSuccessfully) {
         // todo: действия после
+        onClickToLogin();
       } else {
         // setLoginError(true);
       }
@@ -92,6 +101,31 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
       </Typography>
 
       <TextField
+        autoFocus
+        margin="normal"
+        required
+        fullWidth
+        id="firstName"
+        label="Firlst Name"
+        name="firstName"
+        autoComplete="off"
+        value={fields.firstName}
+        error={fields.error}
+        onChange={createHandlerInputChange('firstName')}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="lastName"
+        label="Last Name"
+        name="lastName"
+        autoComplete="off"
+        value={fields.lastName}
+        error={fields.error}
+        onChange={createHandlerInputChange('lastName')}
+      />
+      <TextField
         margin="normal"
         required
         fullWidth
@@ -99,7 +133,6 @@ const SignUpForm = ({onClickToLogin}: SingUpFormProps) => {
         label="Email Address"
         name="email"
         autoComplete="off"
-        autoFocus
         value={fields.email}
         error={fields.error}
         onChange={createHandlerInputChange('email')}
