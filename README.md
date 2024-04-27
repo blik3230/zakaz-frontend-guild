@@ -37,4 +37,20 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Проект хоститься в firebase под моим рабочим аккаунтом.
 
 ## Диплой проекта
-    - #todo пошагово описать процесс диплоя
+https://firebase.google.com/docs/cli#mac-linux-npm
+Установить firebase cli
+```
+npm install -g firebase-toolsnpm install -g firebase-tools
+```
+Авторизоваться в firebase
+```
+firebase login
+```
+Добавить алиас проекта
+```
+firebase use --add
+```
+Диплой проекта
+```
+firebase deploy
+```

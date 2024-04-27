@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "zakaz-frontend-guild"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
