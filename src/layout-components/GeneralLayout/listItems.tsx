@@ -4,6 +4,7 @@ import TableViewIcon from '@mui/icons-material/TableView';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -13,8 +14,8 @@ import * as React from 'react';
 
 export const mainListItems = (
   <React.Fragment>
-    <Link href={ '/' }>
-      <ListItemButton href={ '/' }>
+    <Link href={ '/' } passHref>
+      <ListItemButton>
         <ListItemIcon>
           <HomeIcon/>
         </ListItemIcon>
@@ -22,8 +23,8 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
-    <Link href={ '/reviewers' }>
-      <ListItemButton href={ '/reviewers' }>
+    <Link href={ '/reviewers' } passHref>
+      <ListItemButton>
         <ListItemIcon>
           <TableViewIcon/>
         </ListItemIcon>
@@ -41,5 +42,14 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Users"/>
     </ListItemButton>
+
+    <Link href={ '/pets' } passHref>
+      <ListItemButton>
+        <ListItemIcon>
+          <VideogameAssetIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Pet projects"/>
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );

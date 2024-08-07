@@ -22,9 +22,8 @@ const mainSx = {
 };
 
 const whapChildrenSx = {
-  flex: '1 0 auto',
   width: '100%',
-  minHeight: 0,
+  height: '100%',
 };
 
 const drawerWidth: number = 240;
@@ -184,7 +183,7 @@ export const GeneralLayout = (props: GeneralLayoutProps) => {
 
       <Box component="main" sx={ mainSx } id="main">
         <Toolbar/>
-        <Container maxWidth="lg" sx={ { mt: 4, mb: 4, height: '100s%' } }>
+        <Container maxWidth="lg" sx={ { mt: 4, mb: 4, height: '100%' } }>
           <Box sx={ whapChildrenSx }>
             { children }
           </Box>
