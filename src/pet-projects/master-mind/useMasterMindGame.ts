@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PegColor } from './components/Peg';
+import { number } from 'prop-types';
 
 export type VariantColor =
   'red'
@@ -52,14 +53,14 @@ const useMasterMindGame = () => {
   };
 
   const selectColor = (index: number, color: VariantColor) => {
-    console.log(index, color);
-    setCurrentVariant(prevVariant => {
-      const newVariants = [...prevVariant];
-      newVariants[index] = color;
+    const newVariants = [...currentVariant];
+    newVariants[index] = color;
 
-      return newVariants;
-    });
-    setSelectedItemIndex(null);
+    setCurrentVariant(newVariants);
+
+    let firstEmptyIndex = newVariants.findIndex(v => v === 'empty');
+
+    setSelectedItemIndex(firstEmptyIndex);
   };
 
   const selectItem = (index: number) => {

@@ -2,7 +2,7 @@ import useMasterMindGame, { VariantColor } from './useMasterMindGame';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Peg from './components/Peg';
+import Peg, { PegColor } from './components/Peg';
 import { IconButton } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 
@@ -16,6 +16,40 @@ const ALL_COLORS: VariantColor[] = [
   'yellow',
   'purple',
 ];
+
+const getResponseOfVariant = (
+  variant: PegColor[],
+  secretColorSet: VariantColor[] | null,
+): PegColor[] => {
+  if (secretColorSet === null) {
+    return Array.from({ length: ITEMS_IN_VARIANT_COUNT }, () => 'empty');
+  }
+
+  const result = {
+
+    inPlace: [] as PegColor[],
+    inSet: [] as PegColor[],
+    empty: [] as PegColor[],
+  };
+
+  variant.reduce((acc, color, index) => {
+    if (color === secretColorSet[index]) {
+      acc.inPlace.push('green');
+    } else if (secretColorSet.includes(color as VariantColor)) {
+      acc.inSet.push('gray');
+    } else {
+      acc.empty.push('empty');
+    }
+
+    return acc;
+  }, result);
+
+  return [
+    ...result.inPlace,
+    ...result.inSet,
+    ...result.empty,
+  ];
+};
 
 const MasterMind = () => {
   const {
@@ -32,7 +66,7 @@ const MasterMind = () => {
     commitVariant,
   } = useMasterMindGame();
 
-  console.log('commitIsDisabled', commitIsDisabled)
+  console.log('commitIsDisabled', commitIsDisabled);
 
   return (
     <Box className="MasterMind" width="360px">
@@ -119,13 +153,15 @@ const MasterMind = () => {
 
                       <Box
                         sx={{
-                        display: 'flex',
-                        gap: '10px',
-                        width: '40px',
-                        flexWrap: 'wrap',
-                      }}>
-                        <IconButton color='primary' onClick={commitVariant} disabled={commitIsDisabled}>
-                          <CheckCircle/>
+                          display: 'flex',
+                          gap: '10px',
+                          width: '40px',
+                          flexWrap: 'wrap',
+                        }}>
+                        <IconButton color="primary"
+                          onClick={commitVariant}
+                          disabled={commitIsDisabled}>
+                          <CheckCircle />
                         </IconButton>
                       </Box>
                     </Box>
@@ -133,12 +169,16 @@ const MasterMind = () => {
                 }
 
                 if (variantFromBoard) {
+                  const response = getResponseOfVariant(variantFromBoard, secretColorSet);
+
                   return (
                     <Box sx={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '10px',
+                      border: '2px solid transparent',
+                      borderRadius: '8px',
                     }}>
                       <Box sx={{ display: 'flex', gap: '20px' }}>
                         {
@@ -155,8 +195,8 @@ const MasterMind = () => {
                         flexWrap: 'wrap',
                       }}>
                         {
-                          Array.from({ length: ITEMS_IN_VARIANT_COUNT }, (_, i) => (
-                            <Peg key={i} color="empty" size="small" />
+                          response.map((color, i) => (
+                            <Peg key={i} color={color} size="small" />
                           ))
                         }
                       </Box>
@@ -169,6 +209,8 @@ const MasterMind = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '10px',
+                      border: '2px solid transparent',
+                      borderRadius: '8px',
                     }}>
                       <Box sx={{ display: 'flex', gap: '20px' }}>
                         {

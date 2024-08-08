@@ -41,16 +41,22 @@ const Peg = ({ color, size = 'normal', onClick }: PegProps) => {
         borderRadius: '50%',
         background: pegColorMap[color],
         overflow: 'hidden',
-        '&:after': {
-          content: '""',
-          position: 'absolute',
-          top: '2px',
-          left: '-2px',
-          width: '100%',
-          height: '100%',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(0,0,0,0.15)',
-        },
+        ...(
+          color !== 'empty'
+            ? {
+              '&:after': {
+                content: '""',
+                position: 'absolute',
+                top: '2px',
+                left: '-2px',
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(0,0,0,0.15)',
+              },
+            }
+            : {}
+        ),
       }} />
   );
 };
