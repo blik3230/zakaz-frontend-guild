@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { PegColor } from './components/Peg';
-import { number } from 'prop-types';
 import { getResponseOfVariant, VARIANT_COUNT } from './MasterMind';
 
 export type VariantColor =
@@ -60,12 +59,19 @@ const useMasterMindGame = () => {
   };
 
   const selectColor = (index: number, color: VariantColor) => {
-    const newVariants = [...currentVariant];
-    newVariants[index] = color;
+    const newVariant = currentVariant.map(v => {
+      if (v === color) {
+        return 'empty';
+      }
 
-    setCurrentVariant(newVariants);
+      return v;
+    });
 
-    let firstEmptyIndex = newVariants.findIndex(v => v === 'empty');
+    newVariant[index] = color;
+
+    setCurrentVariant(newVariant);
+
+    let firstEmptyIndex = newVariant.findIndex(v => v === 'empty');
 
     setSelectedItemIndex(firstEmptyIndex);
   };

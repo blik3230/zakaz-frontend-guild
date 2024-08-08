@@ -23,10 +23,11 @@ const sizeMap: Record<PegSize, number> = {
 interface PegProps {
   color: PegColor;
   size?: PegSize,
+  isActive?: boolean;
   onClick?: () => void,
 }
 
-const Peg = ({ color, size = 'normal', onClick }: PegProps) => {
+const Peg = ({ color, size = 'normal', isActive, onClick }: PegProps) => {
   const sizeFromMap = sizeMap[size];
 
   return (
@@ -41,6 +42,16 @@ const Peg = ({ color, size = 'normal', onClick }: PegProps) => {
         borderRadius: '50%',
         background: pegColorMap[color],
         overflow: 'hidden',
+        cursor: onClick ? 'pointer' : 'default',
+        ...(
+          isActive
+            ? {
+              outline: '2px solid #303030',
+              outlineOffset: '2px',
+              boxShadow: `-2px 2px 6px 3px rgb(0 10 30 / 38%)`
+            }
+            : {}
+        ),
         ...(
           color !== 'empty'
             ? {

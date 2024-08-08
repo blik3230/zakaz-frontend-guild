@@ -103,7 +103,7 @@ const MasterMind = () => {
             {
               Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
                 const variantFromBoard = board![variantIndex];
-                const colorOptions: VariantColor[] = ALL_COLORS.filter((color) => !currentVariant.includes(color));
+                const colorOptions: VariantColor[] = ALL_COLORS;
 
                 if (variantIndex === currentStepIndex) {
                   return (
@@ -122,29 +122,48 @@ const MasterMind = () => {
 
                             return (
                               <Box key={itemIndex} sx={{ position: 'relative' }}>
-                                <Peg
-                                  color={variantColor}
-                                  onClick={() => selectItem(itemIndex)} />
+                                <Box
+                                  sx={{
+                                    transition: 'all .2s',
+                                    ...(
+                                      colorPanelIsDisplayed
+                                        ? {
+                                          transform: 'scale(1.12)',
+                                        }
+                                        : {}
+                                    ),
+                                  }}
+                                >
+                                  <Peg
+                                    color={variantColor}
+                                    onClick={() => selectItem(itemIndex)}
+                                    isActive={colorPanelIsDisplayed}
+                                  />
+                                </Box>
                                 {
                                   colorPanelIsDisplayed && (
                                     <Box sx={{
                                       position: 'absolute',
-                                      top: '-65px',
-                                      left: '-30px',
+                                      top: '-39px',
+                                      left: '50%',
+                                      transform: 'translateX(-50%)',
                                       display: 'flex',
-                                      gap: '10px',
+                                      gap: '6px',
                                       alignItems: 'center',
-                                      padding: '10px',
+                                      padding: '6px',
                                       border: '2px solid #303030',
                                       borderRadius: '8px',
                                       zIndex: 1,
-                                      background: 'white',
+                                      background: '#e3e1e1',
                                     }}>
                                       {
                                         colorOptions.map((color, colorIndex) => (
-                                          <Peg key={colorIndex}
+                                          <Peg
+                                            key={colorIndex}
+                                            size='small'
                                             color={color}
-                                            onClick={() => selectColor(itemIndex, color)} />
+                                            onClick={() => selectColor(itemIndex, color)}
+                                          />
                                         ))
                                       }
                                     </Box>
