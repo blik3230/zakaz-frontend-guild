@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PegColor } from './components/Peg';
 import { number } from 'prop-types';
+import { getResponseOfVariant, VARIANT_COUNT } from './MasterMind';
 
 export type VariantColor =
   'red'
@@ -35,6 +36,7 @@ const generateSecretColorSet = () => {
 };
 
 const useMasterMindGame = () => {
+  const [gameOver, setGameOver] = useState<boolean>(false);
   const [secretColorSet, setSecretColorSet] = useState<VariantColor[] | null>(null);
   const [board, setBoard] = useState<BoardVariant[] | null>(null);
   const [currentVariant, setCurrentVariant] = useState<PegColor[]>(EMPTY_VARIANT);
@@ -42,14 +44,19 @@ const useMasterMindGame = () => {
 
   const currentStepIndex = board ? board.length : 0;
   const gameWasRun = board !== null;
+  console.log('gameWasRun', gameWasRun);
+  console.log('gameOver', gameOver);
+
 
   const commitIsDisabled = currentVariant.some((v) => v === 'empty');
   console.log('commitIsDisabled', commitIsDisabled);
+
   const startGame = () => {
     const newSet = generateSecretColorSet();
 
     setSecretColorSet(newSet);
     setBoard([]);
+    setGameOver(false);
   };
 
   const selectColor = (index: number, color: VariantColor) => {
@@ -64,19 +71,24 @@ const useMasterMindGame = () => {
   };
 
   const selectItem = (index: number) => {
-    console.log('selectItem', index);
     setSelectedItemIndex(index);
   };
 
   const commitVariant = () => {
-    setBoard(prevBoard => {
-      if (prevBoard === null) {
-        return prevBoard;
-      }
+    if (board) {
+      const newBoard = [...board, currentVariant as BoardVariant];
 
-      return [...prevBoard, currentVariant as BoardVariant];
-    });
-    setCurrentVariant(EMPTY_VARIANT);
+      setBoard(newBoard);
+      setCurrentVariant(EMPTY_VARIANT);
+
+      const response = getResponseOfVariant(currentVariant, secretColorSet);
+      const isSuccess = response.every((v) => v === 'green');
+      const isLastStep = newBoard.length === VARIANT_COUNT;
+
+      if (isSuccess || isLastStep) {
+        setGameOver(true);
+      }
+    }
   }
 
   return {
@@ -87,6 +99,7 @@ const useMasterMindGame = () => {
     currentVariant,
     selectedItemIndex,
     commitIsDisabled,
+    gameOver,
     selectColor,
     startGame,
     selectItem,

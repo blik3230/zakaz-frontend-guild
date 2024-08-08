@@ -6,7 +6,7 @@ import Peg, { PegColor } from './components/Peg';
 import { IconButton } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 
-const VARIANT_COUNT = 10;
+export const VARIANT_COUNT = 10;
 const ITEMS_IN_VARIANT_COUNT = 4;
 const ALL_COLORS: VariantColor[] = [
   'gray',
@@ -17,7 +17,7 @@ const ALL_COLORS: VariantColor[] = [
   'purple',
 ];
 
-const getResponseOfVariant = (
+export const getResponseOfVariant = (
   variant: PegColor[],
   secretColorSet: VariantColor[] | null,
 ): PegColor[] => {
@@ -26,7 +26,6 @@ const getResponseOfVariant = (
   }
 
   const result = {
-
     inPlace: [] as PegColor[],
     inSet: [] as PegColor[],
     empty: [] as PegColor[],
@@ -60,22 +59,28 @@ const MasterMind = () => {
     currentVariant,
     selectedItemIndex,
     commitIsDisabled,
+    gameOver,
     selectColor,
     selectItem,
     startGame,
     commitVariant,
   } = useMasterMindGame();
 
-  console.log('commitIsDisabled', commitIsDisabled);
+  console.log('(!gameWasRun || gameOver)', (!gameWasRun || gameOver));
 
   return (
     <Box className="MasterMind" width="360px">
       <Box>
         <Typography variant="h2">Master Mind Game</Typography>
-        <Button onClick={startGame}>Start Game</Button>
         {
-          !gameWasRun && (
+          (!gameWasRun || gameOver) && (
             <Button onClick={startGame}>Start Game</Button>
+          )
+        }
+
+        {
+          gameOver && (
+            <Typography>Game Over</Typography>
           )
         }
       </Box>
