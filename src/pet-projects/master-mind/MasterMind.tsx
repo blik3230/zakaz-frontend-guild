@@ -3,17 +3,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Peg, { PegColor } from './components/Peg';
-import { IconButton } from '@mui/material';
-import { CheckCircle, Save } from '@mui/icons-material';
+import BoardRow from './components/BoardRow';
 
 export const VARIANT_COUNT = 10;
 const ITEMS_IN_VARIANT_COUNT = 4;
 const ALL_COLORS: VariantColor[] = [
+  'blue',
+  'yellow',
   'gray',
   'red',
-  'blue',
   'green',
-  'yellow',
   'purple',
 ];
 
@@ -66,10 +65,8 @@ const MasterMind = () => {
     commitVariant,
   } = useMasterMindGame();
 
-  console.log('(!gameWasRun || gameOver)', (!gameWasRun || gameOver));
-
   return (
-    <Box className="MasterMind" width="360px">
+    <Box className="MasterMind" width="340px">
       <Box>
         <Typography variant="h2">Master Mind Game</Typography>
         {
@@ -104,159 +101,39 @@ const MasterMind = () => {
           }}>
             {
               Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
-                const variantFromBoard = board![variantIndex];
-                const colorOptions: VariantColor[] = ALL_COLORS;
 
                 if (variantIndex === currentStepIndex) {
                   return (
-                    <Box sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '10px',
-                      border: '2px solid #303030',
-                      borderRadius: '8px',
-                    }}>
-                      <Box sx={{ display: 'flex', gap: '20px' }}>
-                        {
-                          currentVariant.map((variantColor, itemIndex) => {
-                            const colorPanelIsDisplayed = variantIndex === currentStepIndex && itemIndex === selectedItemIndex;
-
-                            return (
-                              <Box key={itemIndex} sx={{ position: 'relative' }}>
-                                <Box
-                                  sx={{
-                                    transition: 'all .2s',
-                                    ...(
-                                      colorPanelIsDisplayed
-                                        ? {
-                                          transform: 'scale(1.12)',
-                                        }
-                                        : {}
-                                    ),
-                                  }}
-                                >
-                                  <Peg
-                                    color={variantColor}
-                                    onClick={() => selectItem(itemIndex)}
-                                    isActive={colorPanelIsDisplayed}
-                                  />
-                                </Box>
-                                {
-                                  colorPanelIsDisplayed && (
-                                    <Box sx={{
-                                      position: 'absolute',
-                                      top: '100%',
-                                      left: '50%',
-                                      transform: 'translateX(-50%)',
-                                      display: 'flex',
-                                      flexWrap: 'wrap',
-                                      width: '73px',
-                                      gap: '6px',
-                                      alignItems: 'center',
-                                      padding: '6px',
-                                      border: '2px solid #303030',
-                                      borderRadius: '8px',
-                                      zIndex: 1,
-                                      background: '#e3e1e1',
-                                    }}>
-                                      {
-                                        colorOptions.map((color, colorIndex) => (
-                                          <Peg
-                                            key={colorIndex}
-                                            size='small'
-                                            color={color}
-                                            onClick={() => selectColor(itemIndex, color)}
-                                          />
-                                        ))
-                                      }
-                                    </Box>
-                                  )
-                                }
-                              </Box>
-                            );
-                          })
-                        }
-                      </Box>
-
-                      <IconButton
-                        color="success"
-                        onClick={commitVariant}
-                        disabled={commitIsDisabled}
-                      >
-                        <Save/>
-                      </IconButton>
-                    </Box>
+                    <BoardRow
+                      isActive
+                      variant={currentVariant}
+                      response={null}
+                      commitIsDisabled={commitIsDisabled}
+                      onItemClick={selectItem}
+                      onSelectColor={selectColor}
+                      selectedItemIndex={selectedItemIndex}
+                      onCommit={commitVariant}
+                    />
                   );
                 }
+
+                const variantFromBoard = board![variantIndex];
 
                 if (variantFromBoard) {
                   const response = getResponseOfVariant(variantFromBoard, secretColorSet);
 
                   return (
-                    <Box sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '10px',
-                      border: '2px solid transparent',
-                      borderRadius: '8px',
-                    }}>
-                      <Box sx={{ display: 'flex', gap: '20px' }}>
-                        {
-                          variantFromBoard.map((v, i) => (
-                            <Peg key={i} color={v} />
-                          ))
-                        }
-                      </Box>
-
-                      <Box sx={{
-                        display: 'flex',
-                        gap: '10px',
-                        width: '40px',
-                        flexWrap: 'wrap',
-                      }}>
-                        {
-                          response.map((color, i) => (
-                            <Peg key={i} color={color} size="small" />
-                          ))
-                        }
-                      </Box>
-                    </Box>
+                    <BoardRow
+                      variant={variantFromBoard}
+                      response={response}
+                    />
                   );
                 } else {
                   return (
-                    <Box sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '10px',
-                      border: '2px solid transparent',
-                      borderRadius: '8px',
-                    }}>
-                      <Box sx={{ display: 'flex', gap: '20px' }}>
-                        {
-                          Array.from({ length: ITEMS_IN_VARIANT_COUNT }, (_, i) => {
-                            return (
-                              <Peg key={i} color="empty" />
-                            );
-                          })
-                        }
-                      </Box>
-
-                      <Box sx={{
-                        display: 'flex',
-                        gap: '10px',
-                        width: '40px',
-                        flexWrap: 'wrap',
-                      }}>
-                        {
-                          Array.from({ length: ITEMS_IN_VARIANT_COUNT }, (_, i) => (
-                            <Peg key={i} color="empty" size="small" />
-                          ))
-                        }
-                      </Box>
-                    </Box>
+                    <BoardRow
+                      variant={['empty', 'empty', 'empty', 'empty']}
+                      response={null}
+                    />
                   );
                 }
               }).reverse()

@@ -16,7 +16,7 @@ const pegColorMap: Record<PegColor, string> = {
 type PegSize = 'small' | 'normal';
 
 const sizeMap: Record<PegSize, number> = {
-  small: 15,
+  small: 16,
   normal: 32,
 };
 
