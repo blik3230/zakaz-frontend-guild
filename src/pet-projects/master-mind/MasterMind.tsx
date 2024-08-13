@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Peg, { PegColor } from './components/Peg';
 import { IconButton } from '@mui/material';
-import { CheckCircle } from '@mui/icons-material';
+import { CheckCircle, Save } from '@mui/icons-material';
 
 export const VARIANT_COUNT = 10;
 const ITEMS_IN_VARIANT_COUNT = 4;
@@ -99,6 +99,8 @@ const MasterMind = () => {
             padding: '20px',
             border: '2px solid #303030',
             borderRadius: '8px',
+            background: '#f2f3f2',
+            boxShadow: '-2px 2px 10px rgba(0, 0, 0, 0.2)',
           }}>
             {
               Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
@@ -144,10 +146,12 @@ const MasterMind = () => {
                                   colorPanelIsDisplayed && (
                                     <Box sx={{
                                       position: 'absolute',
-                                      top: '-39px',
+                                      top: '100%',
                                       left: '50%',
                                       transform: 'translateX(-50%)',
                                       display: 'flex',
+                                      flexWrap: 'wrap',
+                                      width: '73px',
                                       gap: '6px',
                                       alignItems: 'center',
                                       padding: '6px',
@@ -175,19 +179,13 @@ const MasterMind = () => {
                         }
                       </Box>
 
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          gap: '10px',
-                          width: '40px',
-                          flexWrap: 'wrap',
-                        }}>
-                        <IconButton color="primary"
-                          onClick={commitVariant}
-                          disabled={commitIsDisabled}>
-                          <CheckCircle />
-                        </IconButton>
-                      </Box>
+                      <IconButton
+                        color="success"
+                        onClick={commitVariant}
+                        disabled={commitIsDisabled}
+                      >
+                        <Save/>
+                      </IconButton>
                     </Box>
                   );
                 }

@@ -17,7 +17,7 @@ type PegSize = 'small' | 'normal';
 
 const sizeMap: Record<PegSize, number> = {
   small: 15,
-  normal: 40,
+  normal: 32,
 };
 
 interface PegProps {
@@ -42,7 +42,11 @@ const Peg = ({ color, size = 'normal', isActive, onClick }: PegProps) => {
         borderRadius: '50%',
         background: pegColorMap[color],
         overflow: 'hidden',
+        boxShadow: 'inset 1px -1px 2px rgba(0, 0, 0, 0.3),' +
+          'inset -1px 1px 2px rgba(255, 255, 255, 0.3),' +
+          '-1px 1px 2px rgba(0, 0, 0, 0.3)',
         cursor: onClick ? 'pointer' : 'default',
+        translation: 'all 0.3s',
         ...(
           isActive
             ? {
@@ -57,6 +61,7 @@ const Peg = ({ color, size = 'normal', isActive, onClick }: PegProps) => {
             ? {
               '&:after': {
                 content: '""',
+                display: 'none',
                 position: 'absolute',
                 top: '2px',
                 left: '-2px',

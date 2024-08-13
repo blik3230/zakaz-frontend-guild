@@ -77,7 +77,7 @@ const useMasterMindGame = () => {
   };
 
   const selectItem = (index: number) => {
-    setSelectedItemIndex(index);
+    setSelectedItemIndex(index === selectedItemIndex? null : index);
   };
 
   const commitVariant = () => {
