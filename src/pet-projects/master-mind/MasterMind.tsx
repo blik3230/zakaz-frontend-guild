@@ -1,8 +1,7 @@
-import useMasterMindGame, { VariantColor } from './useMasterMindGame';
+import useMasterMindGame from './useMasterMindGame';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { PegColor } from './components/Peg';
 import BoardRow from './components/BoardRow';
 import GameRules from './components/GameRules';
 import { Dialog, DialogContent } from '@mui/material';

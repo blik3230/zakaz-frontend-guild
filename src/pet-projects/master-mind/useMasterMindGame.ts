@@ -45,11 +45,7 @@ const useMasterMindGame = () => {
   const [rulesIsOpen, setRulesIsOpen] = useState<boolean>(false);
 
   const currentStepIndex = boardVariants.length;
-
-
   const commitIsDisabled = currentVariant.some((v) => v === 'empty');
-
-  console.log('secretColorSet', secretColorSet);
 
   const startGame = () => {
     const newSet = generateSecretColorSet();
