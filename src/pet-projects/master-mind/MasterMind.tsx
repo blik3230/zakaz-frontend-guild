@@ -8,45 +8,9 @@ import GameRules from './components/GameRules';
 import { Dialog, DialogContent } from '@mui/material';
 
 export const VARIANT_COUNT = 10;
-const ITEMS_IN_VARIANT_COUNT = 4;
-
-
-export const getResponseOfVariant = (
-  variant: PegColor[],
-  secretColorSet: VariantColor[] | null,
-): PegColor[] => {
-  if (secretColorSet === null) {
-    return Array.from({ length: ITEMS_IN_VARIANT_COUNT }, () => 'empty');
-  }
-
-  const result = {
-    inPlace: [] as PegColor[],
-    inSet: [] as PegColor[],
-    empty: [] as PegColor[],
-  };
-
-  variant.reduce((acc, color, index) => {
-    if (color === secretColorSet[index]) {
-      acc.inPlace.push('green');
-    } else if (secretColorSet.includes(color as VariantColor)) {
-      acc.inSet.push('gray');
-    } else {
-      acc.empty.push('empty');
-    }
-
-    return acc;
-  }, result);
-
-  return [
-    ...result.inPlace,
-    ...result.inSet,
-    ...result.empty,
-  ];
-};
 
 const MasterMind = () => {
   const {
-    secretColorSet,
     boardVariants,
     currentStepIndex,
     currentVariant,
@@ -60,30 +24,54 @@ const MasterMind = () => {
     rulesIsOpen,
     openRules,
     closeRules,
+    checkVariant,
+    getResponseOfVariant,
+    secretColorSet,
   } = useMasterMindGame();
 
+  const renderGameOver = () => {
+    const lastVariant = boardVariants[boardVariants.length - 1];
+
+    const successfully = checkVariant(lastVariant);
+
+    if (successfully) {
+      return (
+        <Box
+          sx={{ p: '10px' }}
+        >
+          <Typography variant="h4">Поздравляю ты разгадал комбинацию. Кол-во попыток:{boardVariants.length} </Typography>
+          <Button onClick={startGame}>Начать заново</Button>
+        </Box>
+      );
+    }
+
+    return (
+      <Box
+        sx={{ p: '10px' }}
+      >
+        <Typography variant="h4">Тебе не удалось разгадать комбинацию</Typography>
+        <BoardRow variant={secretColorSet || []} response={null} />
+        <Typography variant="h5">Удачи в следующий раз!</Typography>
+        <Button onClick={startGame}>Начать заново</Button>
+      </Box>
+    );
+  };
+
   return (
-    <Box sx={{display: 'flex', gap: 10}} className="MasterMind" >
-      <Box width="340px">
+    <Box className="MasterMind" >
+      <Box>
         <Box>
           <Typography variant="h4">Mastermind</Typography>
 
           <Button sx={{m: '12px 0'}} onClick={openRules}>Открыть правила игры</Button>
 
           {
-            (gameOver) && (
-              <Button onClick={startGame}>Start Game</Button>
-            )
-          }
-
-          {
-            gameOver && (
-              <Typography>Game Over</Typography>
-            )
+            gameOver && renderGameOver()
           }
         </Box>
 
         <Box sx={{
+          width: '340px',
           padding: '20px',
           border: '2px solid #303030',
           borderRadius: '8px',
@@ -94,6 +82,16 @@ const MasterMind = () => {
             Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
 
               if (variantIndex === currentStepIndex) {
+
+                if (gameOver) {
+                  return (
+                    <BoardRow
+                      variant={['empty', 'empty', 'empty', 'empty']}
+                      response={null}
+                    />
+                  );
+                }
+
                 return (
                   <BoardRow
                     isActive
@@ -111,7 +109,7 @@ const MasterMind = () => {
               const variantFromBoard = boardVariants![variantIndex];
 
               if (variantFromBoard) {
-                const response = getResponseOfVariant(variantFromBoard, secretColorSet);
+                const response = getResponseOfVariant(variantFromBoard);
 
                 return (
                   <BoardRow
