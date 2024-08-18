@@ -37,25 +37,21 @@ const generateSecretColorSet = () => {
 const useMasterMindGame = () => {
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [secretColorSet, setSecretColorSet] = useState<VariantColor[] | null>(null);
-  const [board, setBoard] = useState<BoardVariant[] | null>(null);
+  const [boardVariants, setBoardVariants] = useState<BoardVariant[]>([]);
   const [currentVariant, setCurrentVariant] = useState<PegColor[]>(EMPTY_VARIANT);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
   const [rulesIsOpen, setRulesIsOpen] = useState<boolean>(false);
 
-  const currentStepIndex = board ? board.length : 0;
-  const gameWasRun = board !== null;
-  console.log('gameWasRun', gameWasRun);
-  console.log('gameOver', gameOver);
+  const currentStepIndex = boardVariants.length;
 
 
   const commitIsDisabled = currentVariant.some((v) => v === 'empty');
-  console.log('commitIsDisabled', commitIsDisabled);
 
   const startGame = () => {
     const newSet = generateSecretColorSet();
 
     setSecretColorSet(newSet);
-    setBoard([]);
+    setBoardVariants([]);
     setGameOver(false);
   };
 
@@ -82,10 +78,10 @@ const useMasterMindGame = () => {
   };
 
   const commitVariant = () => {
-    if (board) {
-      const newBoard = [...board, currentVariant as BoardVariant];
+    if (boardVariants) {
+      const newBoard = [...boardVariants, currentVariant as BoardVariant];
 
-      setBoard(newBoard);
+      setBoardVariants(newBoard);
       setCurrentVariant(EMPTY_VARIANT);
 
       const response = getResponseOfVariant(currentVariant, secretColorSet);
@@ -103,8 +99,7 @@ const useMasterMindGame = () => {
 
   return {
     currentStepIndex,
-    gameWasRun,
-    board,
+    boardVariants,
     secretColorSet,
     currentVariant,
     selectedItemIndex,

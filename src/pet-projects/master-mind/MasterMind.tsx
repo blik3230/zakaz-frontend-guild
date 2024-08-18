@@ -47,8 +47,7 @@ export const getResponseOfVariant = (
 const MasterMind = () => {
   const {
     secretColorSet,
-    gameWasRun,
-    board,
+    boardVariants,
     currentStepIndex,
     currentVariant,
     selectedItemIndex,
@@ -72,7 +71,7 @@ const MasterMind = () => {
           <Button sx={{m: '12px 0'}} onClick={openRules}>Открыть правила игры</Button>
 
           {
-            (!gameWasRun || gameOver) && (
+            (gameOver) && (
               <Button onClick={startGame}>Start Game</Button>
             )
           }
@@ -84,57 +83,53 @@ const MasterMind = () => {
           }
         </Box>
 
-        {
-          gameWasRun && (
-            <Box sx={{
-              padding: '20px',
-              border: '2px solid #303030',
-              borderRadius: '8px',
-              background: '#f2f3f2',
-              boxShadow: '-2px 2px 10px rgba(0, 0, 0, 0.2)',
-            }}>
-              {
-                Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
+        <Box sx={{
+          padding: '20px',
+          border: '2px solid #303030',
+          borderRadius: '8px',
+          background: '#f2f3f2',
+          boxShadow: '-2px 2px 10px rgba(0, 0, 0, 0.2)',
+        }}>
+          {
+            Array.from({ length: VARIANT_COUNT }, (_v, variantIndex) => {
 
-                  if (variantIndex === currentStepIndex) {
-                    return (
-                      <BoardRow
-                        isActive
-                        variant={currentVariant}
-                        response={null}
-                        commitIsDisabled={commitIsDisabled}
-                        onItemClick={selectItem}
-                        onSelectColor={selectColor}
-                        selectedItemIndex={selectedItemIndex}
-                        onCommit={commitVariant}
-                      />
-                    );
-                  }
-
-                  const variantFromBoard = board![variantIndex];
-
-                  if (variantFromBoard) {
-                    const response = getResponseOfVariant(variantFromBoard, secretColorSet);
-
-                    return (
-                      <BoardRow
-                        variant={variantFromBoard}
-                        response={response}
-                      />
-                    );
-                  } else {
-                    return (
-                      <BoardRow
-                        variant={['empty', 'empty', 'empty', 'empty']}
-                        response={null}
-                      />
-                    );
-                  }
-                }).reverse()
+              if (variantIndex === currentStepIndex) {
+                return (
+                  <BoardRow
+                    isActive
+                    variant={currentVariant}
+                    response={null}
+                    commitIsDisabled={commitIsDisabled}
+                    onItemClick={selectItem}
+                    onSelectColor={selectColor}
+                    selectedItemIndex={selectedItemIndex}
+                    onCommit={commitVariant}
+                  />
+                );
               }
-            </Box>
-          )
-        }
+
+              const variantFromBoard = boardVariants![variantIndex];
+
+              if (variantFromBoard) {
+                const response = getResponseOfVariant(variantFromBoard, secretColorSet);
+
+                return (
+                  <BoardRow
+                    variant={variantFromBoard}
+                    response={response}
+                  />
+                );
+              } else {
+                return (
+                  <BoardRow
+                    variant={['empty', 'empty', 'empty', 'empty']}
+                    response={null}
+                  />
+                );
+              }
+            }).reverse()
+          }
+        </Box>
 
     </Box>
 
