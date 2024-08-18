@@ -1,4 +1,3 @@
-import GroupIcon from '@mui/icons-material/Group';
 import HomeIcon from '@mui/icons-material/Home';
 import TableViewIcon from '@mui/icons-material/TableView';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -36,19 +35,19 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListItemButton>
+    {/*<ListItemButton>
       <ListItemIcon>
         <GroupIcon/>
       </ListItemIcon>
       <ListItemText primary="Users"/>
-    </ListItemButton>
+    </ListItemButton>*/}
 
-    <Link href={ '/pets' } passHref>
+    <Link href={ '/mastermind' } passHref>
       <ListItemButton>
         <ListItemIcon>
           <VideogameAssetIcon/>
         </ListItemIcon>
-        <ListItemText primary="Pet projects"/>
+        <ListItemText primary="Mastermind Game"/>
       </ListItemButton>
     </Link>
   </React.Fragment>

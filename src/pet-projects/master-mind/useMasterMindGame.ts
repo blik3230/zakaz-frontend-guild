@@ -40,6 +40,7 @@ const useMasterMindGame = () => {
   const [board, setBoard] = useState<BoardVariant[] | null>(null);
   const [currentVariant, setCurrentVariant] = useState<PegColor[]>(EMPTY_VARIANT);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
+  const [rulesIsOpen, setRulesIsOpen] = useState<boolean>(false);
 
   const currentStepIndex = board ? board.length : 0;
   const gameWasRun = board !== null;
@@ -97,6 +98,9 @@ const useMasterMindGame = () => {
     }
   }
 
+  const openRules = () => setRulesIsOpen(true);
+  const closeRules = () => setRulesIsOpen(false);
+
   return {
     currentStepIndex,
     gameWasRun,
@@ -106,6 +110,9 @@ const useMasterMindGame = () => {
     selectedItemIndex,
     commitIsDisabled,
     gameOver,
+    rulesIsOpen,
+    openRules,
+    closeRules,
     selectColor,
     startGame,
     selectItem,
