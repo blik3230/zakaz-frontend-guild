@@ -39,7 +39,6 @@ const MasterMind = () => {
           sx={{ p: '10px' }}
         >
           <Typography variant="h4">Поздравляю ты разгадал комбинацию. Кол-во попыток:{boardVariants.length} </Typography>
-          <Button onClick={startGame}>Начать заново</Button>
         </Box>
       );
     }
@@ -51,7 +50,6 @@ const MasterMind = () => {
         <Typography variant="h4">Тебе не удалось разгадать комбинацию</Typography>
         <BoardRow variant={secretColorSet || []} response={null} />
         <Typography variant="h5">Удачи в следующий раз!</Typography>
-        <Button onClick={startGame}>Начать заново</Button>
       </Box>
     );
   };
@@ -62,11 +60,13 @@ const MasterMind = () => {
         <Box>
           <Typography variant="h4">Mastermind</Typography>
 
-          <Button sx={{m: '12px 0'}} onClick={openRules}>Открыть правила игры</Button>
+          <Button sx={{my: 1, display: 'block'}} onClick={openRules}>Открыть правила игры</Button>
 
           {
             gameOver && renderGameOver()
           }
+
+          <Button onClick={startGame} sx={{my: 1}}>Начать заново</Button>
         </Box>
 
         <Box sx={{
@@ -138,8 +138,6 @@ const MasterMind = () => {
           <GameRules/>
         </DialogContent>
       </Dialog>
-
-
     </Box>
 
   );
