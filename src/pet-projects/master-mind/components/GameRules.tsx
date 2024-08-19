@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-import Image from 'next/image';
 
 const GameRules = () => {
   return (
@@ -8,7 +7,8 @@ const GameRules = () => {
       <Typography>
         Привет, это Mastermind — игра, которая немного пошевелит твой мозг.
         В игре используются фишки шести цветов.
-        <Image src="/img/mystery-game/screen1.png" width="151px" height="55px" alt="screen1"/>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/img/mystery-game/screen1.png" width="151" height="55" alt="screen1"/>
         Я загадал комбинацию из четырёх фишек, не повторяя цвета.
         Твоя задача — отгадать эту комбинацию.
         У тебя есть 10 попыток.
@@ -18,7 +18,8 @@ const GameRules = () => {
         Каждая серая фишка говорит о том, что цвет одной из фишек угадан верно, но она находится не на своей позиции.
         Пустая (белая) фишка указывает на то, что ни цвет, ни позиция этой фишки не угаданы.
         Давай разберём на примере:
-        <Image src="/img/mystery-game/screen2.png" width="313px" height="303px"  alt="screen2"/>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/img/mystery-game/screen2.png" width="313" height="303"  alt="screen2"/>
         <br/>
         На этом скриншоте комбинация была отгадана за 5 попыток. Рассмотрим каждую попытку подробнее (попытки идут снизу вверх):
         <br/>
