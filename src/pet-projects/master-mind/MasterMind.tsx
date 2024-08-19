@@ -36,9 +36,12 @@ const MasterMind = () => {
     if (successfully) {
       return (
         <Box
-          sx={{ p: '10px' }}
+          sx={{ p: '10px', textAlign: 'center', padding: 1, width: '340px', borderRadius: '8px' }}
         >
-          <Typography variant="h4">Поздравляю ты разгадал комбинацию. Кол-во попыток:{boardVariants.length} </Typography>
+          <Typography variant="h1">🏆</Typography>
+          <Typography variant="h5">Поздравляю!!!</Typography>
+          <Typography variant="h6">Комбинация разгадана.</Typography>
+          <Typography variant="h6">Кол-во попыток:{boardVariants.length} </Typography>
         </Box>
       );
     }
